@@ -5,6 +5,8 @@ import DoctorLogin from '../pages/DoctorLogin';
 import DoctorDashboard from '../pages/DoctorDashboard';
 import PatientLogin from '../pages/PatientLogin';
 import PatientPortal from '../pages/PatientPortal';
+import DoctorRegister from '../pages/DoctorRegister';
+import PatientRegister from '../pages/PatientRegister';
 
 export const router = createBrowserRouter([
   {
@@ -20,12 +22,20 @@ export const router = createBrowserRouter([
         element: <DoctorLogin />,
       },
       {
+        path: 'doctor-register',
+        element: <DoctorRegister />,
+      },
+      {
         path: 'doctor',
         element: <DoctorDashboard />,
       },
       {
         path: 'patient-login',
         element: <PatientLogin />,
+      },
+      {
+        path: 'patient-register',
+        element: <PatientRegister />,
       },
       {
         path: 'patient',

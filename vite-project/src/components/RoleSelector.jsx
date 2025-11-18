@@ -10,7 +10,8 @@ function RoleSelector({ onSelectRole }) {
             Welcome to Medi3Buddy
           </h1>
           <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto">
-            Your trusted platform for managing and accessing medical records. Choose your role to get started.
+            Your trusted platform for managing and accessing medical records.
+            Choose your role to get started.
           </p>
         </div>
 
@@ -24,13 +25,14 @@ function RoleSelector({ onSelectRole }) {
             <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-200 transition">
               <Eye className="w-8 h-8 text-blue-600" />
             </div>
-            
+
             <h2 className="text-2xl font-bold text-gray-800 mb-3">
               I'm a Doctor
             </h2>
-            
+
             <p className="text-gray-600 mb-6">
-              Access and review patient medical records securely. Read and analyze patient data to provide better care.
+              Access and review patient medical records securely. Read and
+              analyze patient data to provide better care.
             </p>
 
             <div className="space-y-3 mb-6">
@@ -68,13 +70,14 @@ function RoleSelector({ onSelectRole }) {
             <div className="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-6 group-hover:bg-green-200 transition">
               <Plus className="w-8 h-8 text-green-600" />
             </div>
-            
+
             <h2 className="text-2xl font-bold text-gray-800 mb-3">
               I'm a Patient
             </h2>
-            
+
             <p className="text-gray-600 mb-6">
-              Add and manage your medical records. Keep your health information organized in one secure place.
+              Add and manage your medical records. Keep your health information
+              organized in one secure place.
             </p>
 
             <div className="space-y-3 mb-6">
@@ -107,28 +110,36 @@ function RoleSelector({ onSelectRole }) {
 
         {/* Features Section */}
         <div className="mt-16 text-center space-y-8">
-          <h3 className="text-2xl font-bold text-gray-800">Why Choose Medi3Buddy?</h3>
+          <h3 className="text-2xl font-bold text-gray-800">
+            Why Choose Medi3Buddy?
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto">
                 <Lock className="w-6 h-6 text-green-600" />
               </div>
               <h4 className="font-semibold text-gray-800">Secure & Private</h4>
-              <p className="text-gray-600 text-sm">Your medical data is encrypted and protected</p>
+              <p className="text-gray-600 text-sm">
+                Your medical data is encrypted and protected
+              </p>
             </div>
             <div className="space-y-2">
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto">
                 <Heart className="w-6 h-6 text-green-600" />
               </div>
               <h4 className="font-semibold text-gray-800">Easy to Use</h4>
-              <p className="text-gray-600 text-sm">Simple and intuitive interface for all users</p>
+              <p className="text-gray-600 text-sm">
+                Simple and intuitive interface for all users
+              </p>
             </div>
             <div className="space-y-2">
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto">
                 <Stethoscope className="w-6 h-6 text-green-600" />
               </div>
               <h4 className="font-semibold text-gray-800">Professional Care</h4>
-              <p className="text-gray-600 text-sm">Built for healthcare professionals and patients</p>
+              <p className="text-gray-600 text-sm">
+                Built for healthcare professionals and patients
+              </p>
             </div>
           </div>
         </div>
