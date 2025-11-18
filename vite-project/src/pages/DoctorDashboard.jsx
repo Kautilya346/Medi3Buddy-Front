@@ -1,7 +1,9 @@
 import { ArrowRight, Stethoscope, FileText, Plus, Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-function DoctorDashboard({ onBackHome }) {
+function DoctorDashboard() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPatient, setSelectedPatient] = useState(null);
 
@@ -58,7 +60,7 @@ function DoctorDashboard({ onBackHome }) {
             <p className="text-gray-600 mt-2">Access and review patient medical records</p>
           </div>
           <button
-            onClick={onBackHome}
+            onClick={() => navigate('/')}
             className="px-6 py-2 text-gray-600 hover:text-gray-800 transition border border-gray-300 rounded-lg hover:bg-gray-100"
           >
             Back to Home

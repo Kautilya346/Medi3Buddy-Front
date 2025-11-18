@@ -1,7 +1,9 @@
 import { Plus, Heart, FileText, Trash2, Edit2, Calendar } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-function PatientPortal({ onBackHome }) {
+function PatientPortal() {
+  const navigate = useNavigate();
   const [records, setRecords] = useState([
     {
       id: 1,
@@ -93,7 +95,7 @@ function PatientPortal({ onBackHome }) {
               </button>
             )}
             <button
-              onClick={onBackHome}
+              onClick={() => navigate('/')}
               className="px-6 py-2 text-gray-600 hover:text-gray-800 transition border border-gray-300 rounded-lg hover:bg-gray-100"
             >
               Back to Home

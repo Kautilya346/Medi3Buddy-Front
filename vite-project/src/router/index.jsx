@@ -1,0 +1,38 @@
+import { createBrowserRouter } from 'react-router-dom';
+import MainLayout from '../layouts/MainLayout';
+import LandingPage from '../pages/LandingPage';
+import DoctorLogin from '../pages/DoctorLogin';
+import DoctorDashboard from '../pages/DoctorDashboard';
+import PatientLogin from '../pages/PatientLogin';
+import PatientPortal from '../pages/PatientPortal';
+
+export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <LandingPage />,
+      },
+      {
+        path: 'doctor-login',
+        element: <DoctorLogin />,
+      },
+      {
+        path: 'doctor',
+        element: <DoctorDashboard />,
+      },
+      {
+        path: 'patient-login',
+        element: <PatientLogin />,
+      },
+      {
+        path: 'patient',
+        element: <PatientPortal />,
+      },
+    ],
+  },
+]);
+
+export default router;

@@ -1,12 +1,23 @@
-import { ArrowRight, Stethoscope } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Stethoscope, Play } from "lucide-react";
 import RoleSelector from "../components/RoleSelector";
 
-function LandingPage({ onSelectRole }) {
+function LandingPage() {
+  const navigate = useNavigate();
+
+  const handleSelectRole = (role) => {
+    if (role === 'doctor') {
+      navigate('/doctor-login');
+    } else if (role === 'patient') {
+      navigate('/patient-login');
+    } else {
+      navigate(`/${role}`);
+    }
+  };
+
   return (
     <div className="space-y-12">
-      <RoleSelector onSelectRole={onSelectRole} />
-
-      {/* Mid-Section */}
+      <RoleSelector onSelectRole={handleSelectRole} />
       <section className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column */}
@@ -28,7 +39,7 @@ function LandingPage({ onSelectRole }) {
                 Our working process
               </button>
               <button className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition">
-                <ArrowRight className="w-6 h-6 text-white" />
+                <Play className="w-6 h-6 text-white ml-1" />
               </button>
             </div>
           </div>
