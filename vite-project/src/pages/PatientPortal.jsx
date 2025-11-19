@@ -1,23 +1,47 @@
 import { Plus, Heart, FileText, Trash2, Edit2, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import AddReportModal from "../components/AddReportModal";
+import api from "../services/api";
 
 function PatientPortal() {
   const navigate = useNavigate();
   const [records, setRecords] = useState([
     {
       id: 1,
+      cid: "bafkreigzipdevdvodzchzwtcoxfbsxi5w76hk4j3uxm3xh4vynanl3b4fe",
       date: "2024-11-15",
-      type: "Blood Pressure",
-      value: "120/80",
-      notes: "Normal reading",
+      type: "Vitals Snapshot",
+      notes: "Synced from wearable",
+      data: {
+        data: {
+          heartRate: 120,
+          bloodPressure: { systolic: 78, diastolic: 80 },
+          bloodSugar: { fasting: 92, postMeal: 118 },
+          oxygenSaturation: 97,
+          temperature: 98.4,
+          sleepHours: 7.1,
+          stepsToday: 6432,
+        },
+      },
     },
     {
       id: 2,
-      date: "2024-11-10",
-      type: "Blood Sugar",
-      value: "95 mg/dL",
-      notes: "Fasting measurement",
+      cid: "bafkreico2ihkq2yf3nust3tzsnvjzy6kl7iwj5gqbebvqyevwhihxcz2fq",
+      date: "2024-11-08",
+      type: "Vitals Snapshot",
+      notes: "Shared during consultation",
+      data: {
+        data: {
+          heartRate: 105,
+          bloodPressure: { systolic: 80, diastolic: 82 },
+          bloodSugar: { fasting: 96, postMeal: 122 },
+          oxygenSaturation: 98,
+          temperature: 98.1,
+          sleepHours: 6.8,
+          stepsToday: 5820,
+        },
+      },
     },
   ]);
 
@@ -29,21 +53,18 @@ function PatientPortal() {
     value: "",
     notes: "",
   });
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [isReportUploading, setIsReportUploading] = useState(false);
 
   const handleAddRecord = (e) => {
     e.preventDefault();
     if (editingId) {
       setRecords(
-        records.map((r) =>
-          r.id === editingId ? { ...formData, id: r.id } : r
-        )
+        records.map((r) => (r.id === editingId ? { ...formData, id: r.id } : r))
       );
       setEditingId(null);
     } else {
-      setRecords([
-        ...records,
-        { ...formData, id: Date.now() },
-      ]);
+      setRecords([...records, { ...formData, id: Date.now() }]);
     }
     setFormData({
       date: new Date().toISOString().split("T")[0],
@@ -75,6 +96,20 @@ function PatientPortal() {
     });
   };
 
+  const handleReportUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("report", file);
+
+    setIsReportUploading(true);
+    try {
+      await api.post("/patient/reports", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    } finally {
+      setIsReportUploading(false);
+    }
+  };
+
   return (
     <section className="container mx-auto px-6 py-12">
       <div className="space-y-8">
@@ -84,18 +119,25 @@ function PatientPortal() {
             <h1 className="text-4xl font-bold text-gray-800">Patient Portal</h1>
             <p className="text-gray-600 mt-2">Manage your medical records</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap justify-end">
+            <button
+              onClick={() => setIsReportModalOpen(true)}
+              className="px-6 py-2 border border-[#93BDF7] text-[#1B5A4F] font-semibold rounded-lg hover:bg-[#F0F6FF] transition flex items-center gap-2"
+            >
+              <Plus className="w-5 h-5" />
+              Add Report
+            </button>
             {!showForm && (
               <button
                 onClick={() => setShowForm(true)}
-                className="px-6 py-2 bg-gradient-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold rounded-lg hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition flex items-center gap-2"
+                className="px-6 py-2 bg-linear-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold rounded-lg hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition flex items-center gap-2"
               >
                 <Plus className="w-5 h-5" />
                 Add Record
               </button>
             )}
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate("/")}
               className="px-6 py-2 text-gray-600 hover:text-gray-800 transition border border-gray-300 rounded-lg hover:bg-gray-100"
             >
               Back to Home
@@ -181,7 +223,7 @@ function PatientPortal() {
               <div className="flex gap-3">
                 <button
                   type="submit"
-                className="flex-1 bg-gradient-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold py-3 rounded-lg hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition"
+                  className="flex-1 bg-linear-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold py-3 rounded-lg hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition"
                 >
                   {editingId ? "Update Record" : "Add Record"}
                 </button>
@@ -199,60 +241,137 @@ function PatientPortal() {
 
         {/* Records List */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Medical Records</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            Your Medical Records
+          </h2>
           {records.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {records.map((record) => (
-                <div
-                  key={record.id}
-                  className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-white to-[#93BDF7]/60">
-                        <Heart className="w-6 h-6 text-[#93BDF7]" />
-                      </div>
+            <div className="space-y-6">
+              {records.map((record) => {
+                const metricsSource = record.data?.data;
+                const metrics = metricsSource
+                  ? [
+                      metricsSource.heartRate && {
+                        label: "Heart Rate",
+                        value: `${metricsSource.heartRate} bpm`,
+                      },
+                      metricsSource.bloodPressure && {
+                        label: "Blood Pressure",
+                        value: `${metricsSource.bloodPressure.systolic}/${metricsSource.bloodPressure.diastolic}`,
+                      },
+                      metricsSource.bloodSugar?.fasting && {
+                        label: "Blood Sugar (Fasting)",
+                        value: `${metricsSource.bloodSugar.fasting} mg/dL`,
+                      },
+                      metricsSource.bloodSugar?.postMeal && {
+                        label: "Blood Sugar (Post-Meal)",
+                        value: `${metricsSource.bloodSugar.postMeal} mg/dL`,
+                      },
+                      metricsSource.oxygenSaturation && {
+                        label: "O2 Saturation",
+                        value: `${metricsSource.oxygenSaturation}%`,
+                      },
+                      metricsSource.temperature && {
+                        label: "Temperature",
+                        value: `${metricsSource.temperature}°F`,
+                      },
+                      metricsSource.sleepHours && {
+                        label: "Sleep Hours",
+                        value: `${metricsSource.sleepHours}h`,
+                      },
+                      metricsSource.stepsToday && {
+                        label: "Steps Today",
+                        value: metricsSource.stepsToday.toLocaleString(),
+                      },
+                    ].filter(Boolean)
+                  : null;
+
+                return (
+                  <div
+                    key={record.id}
+                    className="rounded-2xl border border-[#C7E8DA] bg-[#F2FAF5] p-6 shadow-sm"
+                  >
+                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-5">
                       <div>
-                        <h3 className="text-lg font-bold text-gray-800">
-                          {record.type}
-                        </h3>
-                        <p className="text-sm text-gray-600 flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {record.date}
-                        </p>
+                        {record.cid ? (
+                          <>
+                            <span className="text-xs font-mono tracking-wide text-[#1B5A4F]/70">
+                              CID: {record.cid}
+                            </span>
+                            <p className="text-sm text-gray-500 mt-1 flex items-center gap-1">
+                              <Calendar className="w-4 h-4" />
+                              {record.date}
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-sm text-gray-500">
+                              {record.date}
+                            </p>
+                            <h3 className="text-lg font-bold text-gray-800">
+                              {record.type}
+                            </h3>
+                          </>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 flex-wrap justify-end">
+                        {record.cid && (
+                          <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#1B5A4F] bg-white/80 px-3 py-1 rounded-full border border-[#C7E8DA]">
+                            <span className="w-2 h-2 rounded-full bg-[#1B5A4F]"></span>
+                            Synced to Chain
+                          </div>
+                        )}
                       </div>
                     </div>
-                    <div className="flex gap-2">
+
+                    {metrics ? (
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                        {metrics.map((item) => (
+                          <div key={item.label}>
+                            <p className="text-xs font-semibold uppercase tracking-widest text-[#1B5A4F]/60">
+                              {item.label}
+                            </p>
+                            <p className="text-2xl font-bold text-[#1B5A4F] mt-1">
+                              {item.value}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="bg-white rounded-xl border border-gray-200 p-4">
+                          <p className="text-xs uppercase tracking-[0.3em] text-gray-400">
+                            VALUE
+                          </p>
+                          <p className="text-3xl font-bold text-[#1B5A4F]">
+                            {record.value || "N/A"}
+                          </p>
+                        </div>
+                        {record.notes && (
+                          <p className="text-gray-600 text-sm">
+                            <span className="font-semibold">Notes:</span>{" "}
+                            {record.notes}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    <div className="flex gap-2 mt-6 justify-end">
                       <button
                         onClick={() => handleEdit(record)}
-                        className="p-2 text-[#1B5A4F] hover:bg-[#E9F4F1] rounded-lg transition"
-                        title="Edit"
+                        className="px-4 py-2 text-[#1B5A4F] border border-[#C7E8DA] rounded-lg font-semibold hover:bg-white transition"
                       >
-                        <Edit2 className="w-5 h-5" />
+                        Edit
                       </button>
                       <button
                         onClick={() => handleDelete(record.id)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
-                        title="Delete"
+                        className="px-4 py-2 text-red-600 border border-red-200 rounded-lg font-semibold hover:bg-red-50 transition"
                       >
-                        <Trash2 className="w-5 h-5" />
+                        Delete
                       </button>
                     </div>
                   </div>
-
-                  <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                    <div className="text-3xl font-bold text-[#93BDF7]">
-                      {record.value}
-                    </div>
-                  </div>
-
-                  {record.notes && (
-                    <p className="text-gray-600 text-sm">
-                      <span className="font-semibold">Notes:</span> {record.notes}
-                    </p>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="bg-gray-50 rounded-xl p-12 text-center">
@@ -270,13 +389,21 @@ function PatientPortal() {
             💡 Health Tips
           </h3>
           <ul className="space-y-2 text-gray-700">
-            <li>✓ Track your vital signs regularly for better health monitoring</li>
+            <li>
+              ✓ Track your vital signs regularly for better health monitoring
+            </li>
             <li>✓ Keep detailed notes about your symptoms and activities</li>
             <li>✓ Share your records with your doctor for better diagnosis</li>
             <li>✓ Monitor trends to identify patterns in your health</li>
           </ul>
         </div>
       </div>
+      <AddReportModal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        onSubmit={handleReportUpload}
+        isUploading={isReportUploading}
+      />
     </section>
   );
 }

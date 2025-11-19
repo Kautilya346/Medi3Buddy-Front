@@ -12,6 +12,8 @@ const axiosInstance = axios.create({
   },
 });
 
+export default axiosInstance;
+
 export const apiCall = async (endpoint, options = {}) => {
   try {
     const response = await axiosInstance({
