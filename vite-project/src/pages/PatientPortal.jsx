@@ -1,8 +1,9 @@
-import { Plus, Heart, FileText, Trash2, Edit2, Calendar, ExternalLink } from "lucide-react";
+import { Plus, Heart, FileText, Trash2, Edit2, Calendar, ExternalLink, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import AddReportModal from "../components/AddReportModal";
 import AddVitalsModal from "../components/AddVitalsModal";
+import ManageDoctorAccessModal from "../components/ManageDoctorAccessModal";
 import { patientAPI as api } from "../services/api";
 
 function PatientPortal() {
@@ -33,7 +34,7 @@ function PatientPortal() {
             console.log("isVitals attribute:", actualData?.isVitals);
             
             // Check if isVitals attribute exists
-            const hasIsVitalsAttribute = actualData?.hasOwnProperty('isVitals');
+            const hasIsVitalsAttribute = actualData && 'isVitals' in actualData;
             console.log(`Record ${index + 1}: hasIsVitalsAttribute = ${hasIsVitalsAttribute}`);
             
             if (!hasIsVitalsAttribute) {
@@ -124,6 +125,7 @@ function PatientPortal() {
   const [isReportUploading, setIsReportUploading] = useState(false);
   const [isVitalsModalOpen, setIsVitalsModalOpen] = useState(false);
   const [isVitalsSubmitting, setIsVitalsSubmitting] = useState(false);
+  const [isManageAccessModalOpen, setIsManageAccessModalOpen] = useState(false);
 
   const handleAddRecord = (e) => {
     e.preventDefault();
@@ -230,7 +232,7 @@ function PatientPortal() {
       const transformedRecords = medicalHistory.medicalHistory?.map((record, index) => {
         if (record.data) {
           const actualData = record.data.data;
-          const hasIsVitalsAttribute = actualData?.hasOwnProperty('isVitals');
+          const hasIsVitalsAttribute = actualData && 'isVitals' in actualData;
           
           if (!hasIsVitalsAttribute) {
             return {
@@ -306,6 +308,13 @@ function PatientPortal() {
             >
               <Plus className="w-4 h-4" />
               Add Report
+            </button>
+            <button
+              onClick={() => setIsManageAccessModalOpen(true)}
+              className="px-4 py-1.5 text-sm bg-[#1B5A4F] text-white font-semibold rounded-lg hover:bg-[#15473F] transition flex items-center gap-1.5"
+            >
+              <Users className="w-4 h-4" />
+              Manage Doctors
             </button>
             <button
               onClick={() => navigate("/")}
@@ -610,6 +619,11 @@ function PatientPortal() {
         onClose={() => setIsVitalsModalOpen(false)}
         onSubmit={handleVitalsSubmit}
         isUploading={isVitalsSubmitting}
+      />
+      <ManageDoctorAccessModal
+        isOpen={isManageAccessModalOpen}
+        onClose={() => setIsManageAccessModalOpen(false)}
+        patientId={localStorage.getItem("patientId")}
       />
     </section>
   );

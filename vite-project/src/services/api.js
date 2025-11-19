@@ -73,6 +73,24 @@ export const patientAPI = {
     data: { healthDataJson, patientId },
   }),
 
+  // Grant doctor access
+  grantDoctorAccess: (patientId, doctorId) => apiCall("/api/patient/grant-access", {
+    method: "POST",
+    data: { patientId, doctorId },
+  }),
+
+  // Revoke doctor access
+  revokeDoctorAccess: (patientId, doctorId) => apiCall("/api/patient/revoke-access", {
+    method: "POST",
+    data: { patientId, doctorId },
+  }),
+
+  // Get doctors with access to patient
+  getDoctorsWithAccess: (patientId) => apiCall(`/api/patient/doctors-with-access/${patientId}`),
+
+  // Get all doctors
+  getAllDoctors: () => apiCall("/api/doctor/all"),
+
   // Get patient's own records
   getRecords: () => apiCall("/api/patient/records"),
 
