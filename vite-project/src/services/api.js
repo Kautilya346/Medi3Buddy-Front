@@ -32,26 +32,53 @@ export const apiCall = async (endpoint, options = {}) => {
 
 // Doctor APIs
 export const doctorAPI = {
+  // Register a new doctor
+  register: (doctorData) =>
+    apiCall("/api/doctor/register", {
+      method: "POST",
+      data: doctorData,
+    }),
+
   // Get all patients for a doctor
-  getAllPatients: (doctorId) => apiCall("/api/get-all-patients", {
-    method: "POST",
-    data: { doctorId },
-  }),
+  getAllPatients: (doctorId) =>
+    apiCall("/api/get-all-patients", {
+      method: "POST",
+      data: { doctorId },
+    }),
 
   // Get medical history for a patient
-  getMedicalHistory: (patientId) => apiCall("/api/get-medical-history", {
-    method: "POST",
-    data: { patientId },
-  }),
+  getMedicalHistory: (patientId) =>
+    apiCall("/api/get-medical-history", {
+      method: "POST",
+      data: { patientId },
+    }),
+
+  // Get all doctors
+  getAllDoctors: () => apiCall("/api/doctor/doctors"),
+
+  // Get doctor by ID
+  getDoctorById: (doctorId) => apiCall(`/api/doctor/doctor/${doctorId}`),
+
+  // Get doctor's patients
+  getDoctorPatients: (doctorId) =>
+    apiCall(`/api/doctor/doctor-patients/${doctorId}`),
 };
 
 // Patient APIs
 export const patientAPI = {
+  // Register a new patient
+  register: (patientData) =>
+    apiCall("/api/patient/register", {
+      method: "POST",
+      data: patientData,
+    }),
+
   // Get patient's medical history
-  getMedicalHistory: (patientId) => apiCall("/api/get-medical-history", {
-    method: "POST",
-    data: { patientId },
-  }),
+  getMedicalHistory: (patientId) =>
+    apiCall("/api/get-medical-history", {
+      method: "POST",
+      data: { patientId },
+    }),
 
   // Upload report file
   uploadReport: (file, patientId) => {
@@ -68,28 +95,39 @@ export const patientAPI = {
   },
 
   // Submit vitals data
-  submitVitals: (healthDataJson, patientId) => apiCall("/api/data-entry", {
-    method: "POST",
-    data: { healthDataJson, patientId },
-  }),
+  submitVitals: (healthDataJson, patientId) =>
+    apiCall("/api/data-entry", {
+      method: "POST",
+      data: { healthDataJson, patientId },
+    }),
 
   // Grant doctor access
-  grantDoctorAccess: (patientId, doctorId) => apiCall("/api/patient/grant-access", {
-    method: "POST",
-    data: { patientId, doctorId },
-  }),
+  grantDoctorAccess: (patientId, doctorId) =>
+    apiCall("/api/patient/grant-access", {
+      method: "POST",
+      data: { patientId, doctorId },
+    }),
 
   // Revoke doctor access
-  revokeDoctorAccess: (patientId, doctorId) => apiCall("/api/patient/revoke-access", {
-    method: "POST",
-    data: { patientId, doctorId },
-  }),
+  revokeDoctorAccess: (patientId, doctorId) =>
+    apiCall("/api/patient/revoke-access", {
+      method: "POST",
+      data: { patientId, doctorId },
+    }),
 
   // Get doctors with access to patient
-  getDoctorsWithAccess: (patientId) => apiCall(`/api/patient/doctors-with-access/${patientId}`),
+  getDoctorsWithAccess: (patientId) =>
+    apiCall(`/api/patient/doctors-with-access/${patientId}`),
 
   // Get all doctors
-  getAllDoctors: () => apiCall("/api/doctor/all"),
+  getAllDoctors: () => apiCall("/api/doctor/doctors"),
+
+  // Get patient data by ID
+  getPatientData: (patientId) =>
+    apiCall("/api/patient/patient/:patientId", {
+      method: "POST",
+      data: { patientId },
+    }),
 
   // Get patient's own records
   getRecords: () => apiCall("/api/patient/records"),
