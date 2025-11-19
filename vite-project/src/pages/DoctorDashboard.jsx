@@ -1,51 +1,48 @@
 import { ArrowRight, Stethoscope, FileText, Plus, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { doctorAPI } from "../services/api";
 
 function DoctorDashboard() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [patients, setPatients] = useState([]);
+  const [medicalHistory, setMedicalHistory] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // Mock patient data - replace with API call
-  const mockPatients = [
-    {
-      id: 1,
-      name: "John Doe",
-      age: 35,
-      email: "john@example.com",
-      lastVisit: "2024-11-10",
-      condition: "Hypertension",
-      records: [
-        { date: "2024-11-10", type: "Blood Pressure", value: "130/80" },
-        { date: "2024-11-05", type: "Heart Rate", value: "72 bpm" },
-      ],
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      age: 28,
-      email: "jane@example.com",
-      lastVisit: "2024-11-08",
-      condition: "Diabetes",
-      records: [
-        { date: "2024-11-08", type: "Blood Glucose", value: "120 mg/dL" },
-      ],
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      age: 45,
-      email: "mike@example.com",
-      lastVisit: "2024-11-12",
-      condition: "Asthma",
-      records: [
-        { date: "2024-11-12", type: "Spirometry", value: "FEV1: 85%" },
-      ],
-    },
-  ];
+  // Load patients from localStorage on mount
+  useEffect(() => {
+    const storedPatients = localStorage.getItem("patients");
+    if (storedPatients) {
+      setPatients(JSON.parse(storedPatients));
+    } else {
+      // Redirect to login if no patients found
+      navigate("/doctor-login");
+    }
+  }, [navigate]);
 
-  const filteredPatients = mockPatients.filter(patient =>
+  // Fetch medical history when a patient is selected
+  useEffect(() => {
+    if (selectedPatient) {
+      fetchMedicalHistory(selectedPatient._id);
+    }
+  }, [selectedPatient]);
+
+  const fetchMedicalHistory = async (patientId) => {
+    setLoading(true);
+    try {
+      const history = await doctorAPI.getMedicalHistory(patientId);
+      setMedicalHistory(history);
+    } catch (error) {
+      console.error("Error fetching medical history:", error);
+      setMedicalHistory(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredPatients = patients.filter(patient =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     patient.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -85,21 +82,25 @@ function DoctorDashboard() {
           <div className="lg:col-span-1 bg-gray-50 rounded-xl p-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Patients</h2>
             <div className="space-y-2">
-              {filteredPatients.map((patient) => (
-                <button
-                  key={patient.id}
-                  onClick={() => setSelectedPatient(patient)}
-                  className={`w-full text-left p-4 rounded-lg transition ${
-                    selectedPatient?.id === patient.id
-                      ? "bg-gradient-to-r from-white to-[#93BDF7]/60 border-2 border-[#93BDF7]"
-                      : "bg-white border border-gray-200 hover:border-[#93BDF7]"
-                  }`}
-                >
-                  <div className="font-semibold text-gray-800">{patient.name}</div>
-                  <div className="text-sm text-gray-600">{patient.email}</div>
-                  <div className="text-xs text-gray-500 mt-1">Last visit: {patient.lastVisit}</div>
-                </button>
-              ))}
+              {filteredPatients.length > 0 ? (
+                filteredPatients.map((patient) => (
+                  <button
+                    key={patient._id}
+                    onClick={() => setSelectedPatient(patient)}
+                    className={`w-full text-left p-4 rounded-lg transition ${
+                      selectedPatient?._id === patient._id
+                        ? "bg-gradient-to-r from-white to-[#93BDF7]/60 border-2 border-[#93BDF7]"
+                        : "bg-white border border-gray-200 hover:border-[#93BDF7]"
+                    }`}
+                  >
+                    <div className="font-semibold text-gray-800">{patient.name}</div>
+                    <div className="text-sm text-gray-600">{patient.gender}, {patient.age} years</div>
+                    <div className="text-xs text-gray-500 mt-1">Updated: {new Date(patient.updatedAt).toLocaleDateString()}</div>
+                  </button>
+                ))
+              ) : (
+                <p className="text-gray-500 text-center py-4">No patients found</p>
+              )}
             </div>
           </div>
 
@@ -112,7 +113,7 @@ function DoctorDashboard() {
                 </h2>
 
                 {/* Patient Info */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <div className="text-sm text-gray-600">Age</div>
                     <div className="text-lg font-semibold text-gray-800">
@@ -120,21 +121,15 @@ function DoctorDashboard() {
                     </div>
                   </div>
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="text-sm text-gray-600">Email</div>
-                    <div className="text-sm font-semibold text-gray-800">
-                      {selectedPatient.email}
-                    </div>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="text-sm text-gray-600">Condition</div>
+                    <div className="text-sm text-gray-600">Gender</div>
                     <div className="text-lg font-semibold text-gray-800">
-                      {selectedPatient.condition}
+                      {selectedPatient.gender}
                     </div>
                   </div>
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="text-sm text-gray-600">Last Visit</div>
-                    <div className="text-sm font-semibold text-gray-800">
-                      {selectedPatient.lastVisit}
+                    <div className="text-sm text-gray-600">Records</div>
+                    <div className="text-lg font-semibold text-gray-800">
+                      {selectedPatient.medicalHistory?.length || 0}
                     </div>
                   </div>
                 </div>
@@ -142,30 +137,72 @@ function DoctorDashboard() {
                 {/* Medical Records */}
                 <div>
                   <h3 className="text-xl font-bold text-gray-800 mb-4">
-                    Medical Records
+                    Medical History
                   </h3>
-                  <div className="space-y-3">
-                    {selectedPatient.records.map((record, index) => (
-                      <div
-                        key={index}
-                        className="bg-[#E9F4F1] border border-[#B8D8CF] rounded-lg p-4"
-                      >
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <div className="font-semibold text-gray-800">
-                              {record.type}
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              {record.date}
-                            </div>
+                  {loading ? (
+                    <div className="text-center py-8">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#93BDF7] mx-auto"></div>
+                      <p className="text-gray-600 mt-4">Loading medical history...</p>
+                    </div>
+                  ) : medicalHistory?.medicalHistory ? (
+                    <div className="space-y-4">
+                      {medicalHistory.medicalHistory.map((record, index) => (
+                        <div
+                          key={index}
+                          className="bg-[#E9F4F1] border border-[#B8D8CF] rounded-lg p-4"
+                        >
+                          <div className="mb-2">
+                            <span className="text-xs font-mono text-gray-500">CID: {record.cid}</span>
                           </div>
-                          <div className="text-lg font-bold text-[#1B5A4F]">
-                            {record.value}
-                          </div>
+                          {record.data?.data && (
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                              <div>
+                                <div className="text-sm text-gray-600">Heart Rate</div>
+                                <div className="text-lg font-bold text-[#1B5A4F]">
+                                  {record.data.data.heartRate} bpm
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-sm text-gray-600">Blood Pressure</div>
+                                <div className="text-lg font-bold text-[#1B5A4F]">
+                                  {record.data.data.bloodPressure.systolic}/{record.data.data.bloodPressure.diastolic}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-sm text-gray-600">Blood Sugar (Fasting)</div>
+                                <div className="text-lg font-bold text-[#1B5A4F]">
+                                  {record.data.data.bloodSugar.fasting} mg/dL
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-sm text-gray-600">O2 Saturation</div>
+                                <div className="text-lg font-bold text-[#1B5A4F]">
+                                  {record.data.data.oxygenSaturation}%
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-sm text-gray-600">Temperature</div>
+                                <div className="text-lg font-bold text-[#1B5A4F]">
+                                  {record.data.data.temperature}°F
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-sm text-gray-600">Sleep Hours</div>
+                                <div className="text-lg font-bold text-[#1B5A4F]">
+                                  {record.data.data.sleepHours}h
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="bg-gray-50 rounded-lg p-8 text-center">
+                      <FileText className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                      <p className="text-gray-600">No medical history available</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Action Buttons */}

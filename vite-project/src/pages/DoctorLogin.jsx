@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Stethoscope, ArrowRight } from "lucide-react";
+import { doctorAPI } from "../services/api";
 
 function DoctorLogin() {
   const navigate = useNavigate();
   const [doctorId, setDoctorId] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -21,11 +22,20 @@ function DoctorLogin() {
       return;
     }
 
-    // Store doctor ID in localStorage for dashboard use
-    localStorage.setItem("doctorId", doctorId.trim());
-    
-    // Navigate to doctor dashboard
-    navigate("/doctor");
+    try {
+      // Fetch patients for this doctor
+      const patients = await doctorAPI.getAllPatients(doctorId.trim());
+      
+      // Store doctor ID and patients in localStorage
+      localStorage.setItem("doctorId", doctorId.trim());
+      localStorage.setItem("patients", JSON.stringify(patients));
+      
+      // Navigate to doctor dashboard
+      navigate("/doctor");
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+      setError("Failed to fetch patient data. Please check your Doctor ID.");
+    }
   };
 
   return (

@@ -1,24 +1,24 @@
 // API service for backend integration
 // Replace with your actual backend URL
 
+import axios from "axios";
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 export const apiCall = async (endpoint, options = {}) => {
-  const url = `${API_BASE_URL}${endpoint}`;
   try {
-    const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
+    const response = await axiosInstance({
+      url: endpoint,
       ...options,
     });
-
-    if (!response.ok) {
-      throw new Error(`API error: ${response.statusText}`);
-    }
-
-    return await response.json();
+    return response.data;
   } catch (error) {
     console.error("API call failed:", error);
     throw error;
@@ -27,22 +27,17 @@ export const apiCall = async (endpoint, options = {}) => {
 
 // Doctor APIs
 export const doctorAPI = {
-  // Get all patients
-  getPatients: () => apiCall("/api/doctor/patients"),
+  // Get all patients for a doctor
+  getAllPatients: (doctorId) => apiCall("/api/get-all-patients", {
+    method: "POST",
+    data: { doctorId },
+  }),
 
-  // Get patient by ID
-  getPatientById: (id) => apiCall(`/api/doctor/patients/${id}`),
-
-  // Search patients
-  searchPatients: (query) =>
-    apiCall(`/api/doctor/patients/search?q=${query}`),
-
-  // Add notes to patient
-  addNotes: (patientId, notes) =>
-    apiCall(`/api/doctor/patients/${patientId}/notes`, {
-      method: "POST",
-      body: JSON.stringify({ notes }),
-    }),
+  // Get medical history for a patient
+  getMedicalHistory: (patientId) => apiCall("/api/get-medical-history", {
+    method: "POST",
+    data: { patientId },
+  }),
 };
 
 // Patient APIs
