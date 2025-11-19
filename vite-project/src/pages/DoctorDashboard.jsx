@@ -172,7 +172,7 @@ function DoctorDashboard() {
                     </div>
                   ) : medicalHistory?.medicalHistory ? (
                     <div className="space-y-6">
-                      {medicalHistory.medicalHistory.map((record, index) => {
+                      {[...medicalHistory.medicalHistory].reverse().map((record, index) => {
                         // Check if record has data
                         const actualData = record.data?.data;
                         const hasIsVitalsAttribute =

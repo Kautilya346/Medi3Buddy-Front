@@ -7,9 +7,9 @@ function Header() {
   const navigate = useNavigate();
 
   return (
-    <header className="container mx-auto px-6 py-6 flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-lg flex items-center justify-center" onClick={() => navigate("/")}>
+    <header className="container mx-auto px-6 py-6 flex items-center justify-between 0" >
+      <div className="flex items-center gap-3" onClick={() => navigate("/")} style={{ cursor: 'pointer' }}>
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center" >
           <img src={docFavicon} alt="Medi3Buddy logo" className="w-12 h-12" />
         </div>
         <span className="text-2xl font-bold text-gray-800">Medi3Buddy</span>
