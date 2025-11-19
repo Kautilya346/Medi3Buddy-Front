@@ -34,7 +34,7 @@ function DoctorLogin() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-r from-white to-[#93BDF7]">
               <Stethoscope className="w-7 h-7 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-gray-800">Medi3Buddy</h1>
@@ -67,7 +67,7 @@ function DoctorLogin() {
                   setError("");
                 }}
                 placeholder="Enter your doctor ID"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-500 transition text-gray-800"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#93BDF7] transition text-gray-800"
               />
             </div>
 
@@ -81,7 +81,7 @@ function DoctorLogin() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold py-3 rounded-lg hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition flex items-center justify-center gap-2"
             >
               Access Patient Records
               <ArrowRight className="w-4 h-4" />
@@ -105,8 +105,8 @@ function DoctorLogin() {
         </div>
 
         {/* Demo Info */}
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <p className="text-sm text-blue-800">
+        <div className="mt-6 p-4 bg-[#E9F4F1] rounded-lg border border-[#B8D8CF]">
+          <p className="text-sm text-[#0F3A33]">
             <strong>Demo:</strong> Try any Doctor ID (e.g., "DOC001", "DOC123")
           </p>
         </div>

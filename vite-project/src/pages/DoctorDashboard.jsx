@@ -75,7 +75,7 @@ function DoctorDashboard() {
             placeholder="Search patients by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-200"
+            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#93BDF7] focus:ring-1 focus:ring-[#93BDF7]/40"
           />
         </div>
 
@@ -91,8 +91,8 @@ function DoctorDashboard() {
                   onClick={() => setSelectedPatient(patient)}
                   className={`w-full text-left p-4 rounded-lg transition ${
                     selectedPatient?.id === patient.id
-                      ? "bg-green-100 border-2 border-green-500"
-                      : "bg-white border border-gray-200 hover:border-green-300"
+                      ? "bg-gradient-to-r from-white to-[#93BDF7]/60 border-2 border-[#93BDF7]"
+                      : "bg-white border border-gray-200 hover:border-[#93BDF7]"
                   }`}
                 >
                   <div className="font-semibold text-gray-800">{patient.name}</div>
@@ -148,7 +148,7 @@ function DoctorDashboard() {
                     {selectedPatient.records.map((record, index) => (
                       <div
                         key={index}
-                        className="bg-blue-50 border border-blue-200 rounded-lg p-4"
+                        className="bg-[#E9F4F1] border border-[#B8D8CF] rounded-lg p-4"
                       >
                         <div className="flex items-start justify-between">
                           <div>
@@ -159,7 +159,7 @@ function DoctorDashboard() {
                               {record.date}
                             </div>
                           </div>
-                          <div className="text-lg font-bold text-blue-600">
+                          <div className="text-lg font-bold text-[#1B5A4F]">
                             {record.value}
                           </div>
                         </div>
@@ -171,13 +171,13 @@ function DoctorDashboard() {
                 {/* Action Buttons */}
                 <div className="mt-6 flex gap-3">
                   <button
-                    className="flex-1 bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"
+                    className="flex-1 bg-[#1B5A4F] text-white font-semibold py-3 rounded-lg hover:bg-[#15473F] transition flex items-center justify-center gap-2"
                   >
                     <FileText className="w-5 h-5" />
                     View Full History
                   </button>
                   <button
-                    className="flex-1 bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2"
+                    className="flex-1 bg-gradient-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold py-3 rounded-lg hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition flex items-center justify-center gap-2"
                   >
                     <Plus className="w-5 h-5" />
                     Add Notes

@@ -88,7 +88,7 @@ function PatientPortal() {
             {!showForm && (
               <button
                 onClick={() => setShowForm(true)}
-                className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition flex items-center gap-2"
+                className="px-6 py-2 bg-gradient-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold rounded-lg hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition flex items-center gap-2"
               >
                 <Plus className="w-5 h-5" />
                 Add Record
@@ -122,7 +122,7 @@ function PatientPortal() {
                     onChange={(e) =>
                       setFormData({ ...formData, date: e.target.value })
                     }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-200"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#93BDF7] focus:ring-1 focus:ring-[#93BDF7]/40"
                   />
                 </div>
                 <div>
@@ -134,7 +134,7 @@ function PatientPortal() {
                     onChange={(e) =>
                       setFormData({ ...formData, type: e.target.value })
                     }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-200"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#93BDF7] focus:ring-1 focus:ring-[#93BDF7]/40"
                   >
                     <option>Blood Pressure</option>
                     <option>Blood Sugar</option>
@@ -159,7 +159,7 @@ function PatientPortal() {
                   onChange={(e) =>
                     setFormData({ ...formData, value: e.target.value })
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-200"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#93BDF7] focus:ring-1 focus:ring-[#93BDF7]/40"
                 />
               </div>
 
@@ -174,14 +174,14 @@ function PatientPortal() {
                     setFormData({ ...formData, notes: e.target.value })
                   }
                   rows="4"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-200"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#93BDF7] focus:ring-1 focus:ring-[#93BDF7]/40"
                 ></textarea>
               </div>
 
               <div className="flex gap-3">
                 <button
                   type="submit"
-                  className="flex-1 bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition"
+                className="flex-1 bg-gradient-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold py-3 rounded-lg hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition"
                 >
                   {editingId ? "Update Record" : "Add Record"}
                 </button>
@@ -209,8 +209,8 @@ function PatientPortal() {
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                        <Heart className="w-6 h-6 text-green-600" />
+                      <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-white to-[#93BDF7]/60">
+                        <Heart className="w-6 h-6 text-[#93BDF7]" />
                       </div>
                       <div>
                         <h3 className="text-lg font-bold text-gray-800">
@@ -225,7 +225,7 @@ function PatientPortal() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleEdit(record)}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                        className="p-2 text-[#1B5A4F] hover:bg-[#E9F4F1] rounded-lg transition"
                         title="Edit"
                       >
                         <Edit2 className="w-5 h-5" />
@@ -241,7 +241,7 @@ function PatientPortal() {
                   </div>
 
                   <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                    <div className="text-3xl font-bold text-green-600">
+                    <div className="text-3xl font-bold text-[#93BDF7]">
                       {record.value}
                     </div>
                   </div>
@@ -265,7 +265,7 @@ function PatientPortal() {
         </div>
 
         {/* Health Tips */}
-        <div className="bg-linear-to-r from-green-50 to-blue-50 rounded-xl p-8 border border-green-200">
+        <div className="bg-linear-to-r from-white to-[#93BDF7] rounded-xl p-8 border border-[#93BDF7]">
           <h3 className="text-xl font-bold text-gray-800 mb-4">
             💡 Health Tips
           </h3>

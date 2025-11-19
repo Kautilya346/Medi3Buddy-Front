@@ -38,7 +38,7 @@ function LandingPage() {
               >
                 Our working process
               </button>
-              <button className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition">
+              <button className="w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-br from-white to-[#93BDF7] hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition">
                 <Play className="w-6 h-6 text-white ml-1" />
               </button>
             </div>
@@ -54,7 +54,7 @@ function LandingPage() {
                 className="w-12 h-12 rounded-full"
                 style={{ backgroundColor: "#B3C8FF" }}
               ></div>
-              <div className="w-12 h-12 bg-green-300 rounded-full -ml-4"></div>
+              <div className="w-12 h-12 rounded-full -ml-4 bg-gradient-to-br from-white to-[#93BDF7]/50"></div>
               <div className="w-12 h-12 bg-purple-300 rounded-full -ml-4"></div>
             </div>
             <div className="mb-4">
@@ -87,7 +87,7 @@ function LandingPage() {
                   cx="64"
                   cy="64"
                   r="56"
-                  stroke="#10b981"
+                  stroke="#93BDF7"
                   strokeWidth="12"
                   fill="none"
                   strokeDasharray={`${352 * 0.84} ${352}`}
@@ -117,7 +117,7 @@ function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* Cardiology Card */}
           <div className="bg-gray-200 rounded-2xl p-6">
-            <div className="w-16 h-16 bg-green-500 rounded-lg flex items-center justify-center mb-4">
+            <div className="w-16 h-16 rounded-lg flex items-center justify-center mb-4 bg-gradient-to-r from-white to-[#93BDF7]">
               <ArrowRight className="w-8 h-8 text-white" />
             </div>
             <h3 className="text-xl font-bold text-gray-800 mb-3">Cardiology</h3>
@@ -128,12 +128,9 @@ function LandingPage() {
           </div>
 
           {/* Dentistry Card */}
-          <div
-            className="rounded-2xl p-6"
-            style={{ backgroundColor: "#E1F3CB" }}
-          >
+          <div className="rounded-2xl p-6 bg-gradient-to-br from-white to-[#93BDF7]/30">
             <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center mb-4">
-              <Stethoscope className="w-8 h-8 text-green-500" />
+              <Stethoscope className="w-8 h-8 text-[#93BDF7]" />
             </div>
             <h3 className="text-xl font-bold text-gray-800 mb-3">Dentistry</h3>
             <p className="text-gray-600 text-sm">
@@ -144,7 +141,7 @@ function LandingPage() {
 
           {/* Neurology Card */}
           <div className="bg-gray-200 rounded-2xl p-6">
-            <div className="w-16 h-16 bg-green-500 rounded-lg flex items-center justify-center mb-4">
+            <div className="w-16 h-16 rounded-lg flex items-center justify-center mb-4 bg-gradient-to-r from-white to-[#93BDF7]">
               <ArrowRight className="w-8 h-8 text-white" />
             </div>
             <h3 className="text-xl font-bold text-gray-800 mb-3">Neurology</h3>

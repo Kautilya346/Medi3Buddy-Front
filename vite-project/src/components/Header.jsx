@@ -13,13 +13,13 @@ function Header() {
       <div className="flex items-center gap-3">
         <Link
           to="/doctor-register"
-          className="px-4 py-2 rounded-lg border border-green-500 text-green-600 font-semibold hover:bg-green-50 transition"
+          className="px-4 py-2 rounded-lg border border-[#93BDF7] text-[#1F3A66] font-semibold hover:bg-[#F0F6FF] transition"
         >
           Register as Doctor
         </Link>
         <Link
           to="/patient-register"
-          className="px-4 py-2 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600 transition"
+          className="px-4 py-2 rounded-lg bg-gradient-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition"
         >
           Register as Patient
         </Link>

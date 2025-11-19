@@ -47,7 +47,7 @@ function PatientRegister() {
               value={form.name}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 text-gray-800"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#93BDF7] text-gray-800"
             />
           </div>
 
@@ -66,7 +66,7 @@ function PatientRegister() {
               value={form.age}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 text-gray-800"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#93BDF7] text-gray-800"
             />
           </div>
 
@@ -84,7 +84,7 @@ function PatientRegister() {
               value={form.gender}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 text-gray-800"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#93BDF7] text-gray-800"
             />
           </div>
 
@@ -101,14 +101,14 @@ function PatientRegister() {
               value={form.medicalHistory}
               onChange={handleChange}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 text-gray-800"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#93BDF7] text-gray-800"
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg transition"
-          >
+        <button
+          type="submit"
+          className="w-full bg-gradient-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold py-2 rounded-lg hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition"
+        >
             Register
           </button>
         </form>
