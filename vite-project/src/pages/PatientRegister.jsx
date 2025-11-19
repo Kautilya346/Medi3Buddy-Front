@@ -88,27 +88,10 @@ function PatientRegister() {
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="medicalHistory"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Medical History (comma separated)
-            </label>
-            <textarea
-              id="medicalHistory"
-              name="medicalHistory"
-              value={form.medicalHistory}
-              onChange={handleChange}
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#93BDF7] text-gray-800"
-            />
-          </div>
-
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold py-2 rounded-lg hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition"
-        >
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-white to-[#93BDF7] text-[#0F1F2E] font-semibold py-2 rounded-lg hover:from-[#F8FBFF] hover:to-[#7CB0F3] transition"
+          >
             Register
           </button>
         </form>
@@ -118,5 +101,3 @@ function PatientRegister() {
 }
 
 export default PatientRegister;
-
-
