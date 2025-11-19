@@ -1,4 +1,12 @@
-import { ArrowRight, Stethoscope, FileText, Plus, Search } from "lucide-react";
+import {
+  ArrowRight,
+  Stethoscope,
+  FileText,
+  Plus,
+  Search,
+  ExternalLink,
+  Calendar,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { doctorAPI } from "../services/api";
@@ -164,72 +172,136 @@ function DoctorDashboard() {
                     </div>
                   ) : medicalHistory?.medicalHistory ? (
                     <div className="space-y-6">
-                      {medicalHistory.medicalHistory.map((record, index) => (
-                        <div
-                          key={index}
-                          className="rounded-2xl border border-[#C7E8DA] bg-[#F2FAF5] p-6 shadow-sm"
-                        >
-                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
-                            <span className="text-xs font-mono tracking-wide text-[#1B5A4F]/70">
-                              CID: {record.cid}
-                            </span>
-                            <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#1B5A4F] bg-white/80 px-3 py-1 rounded-full border border-[#C7E8DA]">
-                              <span className="w-2 h-2 rounded-full bg-[#1B5A4F]"></span>
-                              Synced to Chain
+                      {medicalHistory.medicalHistory.map((record, index) => {
+                        // Check if record has data
+                        const actualData = record.data?.data;
+                        const hasIsVitalsAttribute =
+                          actualData && "isVitals" in actualData;
+                        const isVitals = actualData?.isVitals === true;
+                        const contentType = record.data?.contentType;
+
+                        // Determine if this is a media file (document/image)
+                        const isMediaFile =
+                          !hasIsVitalsAttribute ||
+                          (contentType && contentType !== "application/json");
+
+                        return (
+                          <div
+                            key={index}
+                            className="rounded-2xl border border-[#C7E8DA] bg-[#F2FAF5] p-6 shadow-sm"
+                          >
+                            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
+                              <div>
+                                <span className="text-xs font-mono tracking-wide text-[#1B5A4F]/70">
+                                  CID: {record.cid}
+                                </span>
+                                <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                  <Calendar className="w-3 h-3" />
+                                  {new Date().toLocaleDateString()}
+                                </p>
+                              </div>
+                              <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#1B5A4F] bg-white/80 px-3 py-1 rounded-full border border-[#C7E8DA]">
+                                <span className="w-2 h-2 rounded-full bg-[#1B5A4F]"></span>
+                                Synced to Chain
+                              </div>
                             </div>
-                          </div>
-                          {record.data?.data && (
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                              {[
-                                record.data.data.heartRate && {
-                                  label: "Heart Rate",
-                                  value: `${record.data.data.heartRate} bpm`,
-                                },
-                                record.data.data.bloodPressure && {
-                                  label: "Blood Pressure",
-                                  value: `${record.data.data.bloodPressure.systolic}/${record.data.data.bloodPressure.diastolic}`,
-                                },
-                                record.data.data.bloodSugar?.fasting && {
-                                  label: "Blood Sugar (Fasting)",
-                                  value: `${record.data.data.bloodSugar.fasting} mg/dL`,
-                                },
-                                record.data.data.bloodSugar?.postMeal && {
-                                  label: "Blood Sugar (Post-Meal)",
-                                  value: `${record.data.data.bloodSugar.postMeal} mg/dL`,
-                                },
-                                record.data.data.oxygenSaturation && {
-                                  label: "O2 Saturation",
-                                  value: `${record.data.data.oxygenSaturation}%`,
-                                },
-                                record.data.data.temperature && {
-                                  label: "Temperature",
-                                  value: `${record.data.data.temperature}°F`,
-                                },
-                                record.data.data.sleepHours && {
-                                  label: "Sleep Hours",
-                                  value: `${record.data.data.sleepHours}h`,
-                                },
-                                record.data.data.stepsToday && {
-                                  label: "Steps Today",
-                                  value:
-                                    record.data.data.stepsToday.toLocaleString(),
-                                },
-                              ]
-                                .filter(Boolean)
-                                .map((item) => (
-                                  <div key={item.label}>
-                                    <p className="text-xs font-semibold uppercase tracking-widest text-[#1B5A4F]/60">
-                                      {item.label}
-                                    </p>
-                                    <p className="text-2xl font-bold text-[#1B5A4F] mt-1">
-                                      {item.value}
-                                    </p>
+
+                            {isMediaFile ? (
+                              // Display media file with link to view
+                              <div className="space-y-3">
+                                <div className="bg-white rounded-lg border border-gray-200 p-4">
+                                  <div className="flex items-start justify-between">
+                                    <div>
+                                      <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">
+                                        UPLOADED DOCUMENT
+                                      </p>
+                                      <p className="text-sm font-bold text-[#1B5A4F] mb-1">
+                                        {contentType === "image/jpeg"
+                                          ? "Medical Image"
+                                          : contentType === "image/png"
+                                          ? "Medical Image"
+                                          : contentType === "application/pdf"
+                                          ? "Medical Document (PDF)"
+                                          : "Medical Document"}
+                                      </p>
+                                      <p className="text-xs text-gray-500">
+                                        Type: {contentType || "Unknown"}
+                                      </p>
+                                    </div>
+                                    <FileText className="w-8 h-8 text-[#1B5A4F]/40" />
                                   </div>
-                                ))}
-                            </div>
-                          )}
-                        </div>
-                      ))}
+                                  <a
+                                    href={`https://indigo-payable-narwhal-178.mypinata.cloud/ipfs/${record.cid}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 mt-4 px-4 py-2 text-sm bg-[#1B5A4F] text-white rounded-lg hover:bg-[#15473F] transition font-semibold"
+                                  >
+                                    <ExternalLink className="w-4 h-4" />
+                                    View Document
+                                  </a>
+                                </div>
+                              </div>
+                            ) : isVitals && actualData ? (
+                              // Display vitals data
+                              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                {[
+                                  actualData.heartRate && {
+                                    label: "Heart Rate",
+                                    value: `${actualData.heartRate} bpm`,
+                                  },
+                                  actualData.bloodPressure && {
+                                    label: "Blood Pressure",
+                                    value: `${actualData.bloodPressure.systolic}/${actualData.bloodPressure.diastolic}`,
+                                  },
+                                  actualData.bloodSugar?.fasting && {
+                                    label: "Blood Sugar (Fasting)",
+                                    value: `${actualData.bloodSugar.fasting} mg/dL`,
+                                  },
+                                  actualData.bloodSugar?.postMeal && {
+                                    label: "Blood Sugar (Post-Meal)",
+                                    value: `${actualData.bloodSugar.postMeal} mg/dL`,
+                                  },
+                                  actualData.oxygenSaturation && {
+                                    label: "O2 Saturation",
+                                    value: `${actualData.oxygenSaturation}%`,
+                                  },
+                                  actualData.temperature && {
+                                    label: "Temperature",
+                                    value: `${actualData.temperature}°F`,
+                                  },
+                                  actualData.sleepHours && {
+                                    label: "Sleep Hours",
+                                    value: `${actualData.sleepHours}h`,
+                                  },
+                                  actualData.stepsToday && {
+                                    label: "Steps Today",
+                                    value:
+                                      actualData.stepsToday.toLocaleString(),
+                                  },
+                                ]
+                                  .filter(Boolean)
+                                  .map((item) => (
+                                    <div key={item.label}>
+                                      <p className="text-xs font-semibold uppercase tracking-widest text-[#1B5A4F]/60">
+                                        {item.label}
+                                      </p>
+                                      <p className="text-2xl font-bold text-[#1B5A4F] mt-1">
+                                        {item.value}
+                                      </p>
+                                    </div>
+                                  ))}
+                              </div>
+                            ) : (
+                              // Fallback for unknown format
+                              <div className="bg-white rounded-lg border border-gray-200 p-4">
+                                <p className="text-sm text-gray-600">
+                                  Unable to display this record format
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   ) : (
                     <div className="bg-gray-50 rounded-lg p-8 text-center">
