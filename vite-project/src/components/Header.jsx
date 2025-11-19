@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
 import docFavicon from "../assets/doc_favicon.png";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+
+  const navigate = useNavigate();
+
   return (
     <header className="container mx-auto px-6 py-6 flex items-center justify-between">
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-lg flex items-center justify-center">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center" onClick={() => navigate("/")}>
           <img src={docFavicon} alt="Medi3Buddy logo" className="w-12 h-12" />
         </div>
         <span className="text-2xl font-bold text-gray-800">Medi3Buddy</span>

@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, ArrowRight } from "lucide-react";
+import { patientAPI } from "../services/api";
 
 function PatientLogin() {
   const navigate = useNavigate();
   const [patientId, setPatientId] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -21,11 +22,41 @@ function PatientLogin() {
       return;
     }
 
-    // Store patient ID in localStorage for portal use
-    localStorage.setItem("patientId", patientId.trim());
-    
-    // Navigate to patient portal
-    navigate("/patient");
+    try {
+      // Fetch medical history for this patient
+      console.log("=== PATIENT LOGIN: Fetching medical history ===");
+      console.log("Patient ID:", patientId.trim());
+      
+      const medicalHistory = await patientAPI.getMedicalHistory(patientId.trim());
+      
+      console.log("=== API RESPONSE RECEIVED ===");
+      console.log("Full response:", medicalHistory);
+      console.log("Patient Name:", medicalHistory.patientName);
+      console.log("Number of medical history records:", medicalHistory.medicalHistory?.length);
+      console.log("Medical history array:", medicalHistory.medicalHistory);
+      
+      // Log each medical history record
+      medicalHistory.medicalHistory?.forEach((record, index) => {
+        console.log(`\n--- Record ${index + 1} ---`);
+        console.log("CID:", record.cid);
+        console.log("Has data:", !!record.data);
+        console.log("Full record:", JSON.stringify(record, null, 2));
+      });
+      
+      // Store patient ID and medical history in localStorage
+      localStorage.setItem("patientId", patientId.trim());
+      localStorage.setItem("patientData", JSON.stringify(medicalHistory));
+      
+      console.log("=== Data stored in localStorage ===");
+      
+      // Navigate to patient portal
+      navigate("/patient");
+    } catch (error) {
+      console.error("=== ERROR FETCHING MEDICAL HISTORY ===");
+      console.error("Error:", error);
+      console.error("Error details:", error.response?.data || error.message);
+      setError("Failed to fetch medical history. Please check your Patient ID.");
+    }
   };
 
   return (

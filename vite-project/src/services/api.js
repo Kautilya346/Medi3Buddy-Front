@@ -16,13 +16,16 @@ export default axiosInstance;
 
 export const apiCall = async (endpoint, options = {}) => {
   try {
+    console.log(`Making API call to: ${endpoint}`, options);
     const response = await axiosInstance({
       url: endpoint,
       ...options,
     });
+    console.log(`API response from ${endpoint}:`, response.data);
     return response.data;
   } catch (error) {
-    console.error("API call failed:", error);
+    console.error(`API call failed for ${endpoint}:`, error.message);
+    console.error("Full error:", error);
     throw error;
   }
 };
@@ -44,6 +47,32 @@ export const doctorAPI = {
 
 // Patient APIs
 export const patientAPI = {
+  // Get patient's medical history
+  getMedicalHistory: (patientId) => apiCall("/api/get-medical-history", {
+    method: "POST",
+    data: { patientId },
+  }),
+
+  // Upload report file
+  uploadReport: (file, patientId) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("patientId", patientId);
+    return apiCall("/api/upload-media", {
+      method: "POST",
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
+
+  // Submit vitals data
+  submitVitals: (healthDataJson, patientId) => apiCall("/api/data-entry", {
+    method: "POST",
+    data: { healthDataJson, patientId },
+  }),
+
   // Get patient's own records
   getRecords: () => apiCall("/api/patient/records"),
 
