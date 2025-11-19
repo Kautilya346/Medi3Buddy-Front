@@ -153,6 +153,18 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Karin Regular";
+  src: url("/karin-font/karin-regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-karin {
+  font-family: "Karin Regular", "TT Firs Neue", sans-serif;
+}
+
 * {
   font-family: "TT Firs Neue", sans-serif;
 }

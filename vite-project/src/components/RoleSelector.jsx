@@ -6,7 +6,7 @@ function RoleSelector({ onSelectRole }) {
       <div className="space-y-8">
         {/* Introduction */}
         <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-800 leading-tight font-karin">
             Welcome to <span className="text-[#1B5A4F]">Medi3Buddy</span>
           </h1>
           <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto">

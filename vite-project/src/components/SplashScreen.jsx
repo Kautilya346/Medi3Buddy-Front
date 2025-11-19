@@ -19,9 +19,9 @@ function SplashScreen() {
               />
             </svg>
           </div>
-          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#93BDF7] rounded-full flex items-center justify-center">
+          {/* <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#93BDF7] rounded-full flex items-center justify-center">
             <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-          </div>
+          </div> */}
         </div>
 
         {/* Brand */}
